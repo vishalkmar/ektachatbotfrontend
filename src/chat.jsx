@@ -23,7 +23,7 @@ export default function Chat() {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const res = await axios.get("https://ektachatboatbackend.onrender.com/api/history");
+        const res = await axios.get("https://ektachatboatbackend-1.onrender.com/api/history");
         setMessages(res.data.history);
       } catch (err) {
         console.error("Error fetching history:", err);
@@ -37,7 +37,7 @@ export default function Chat() {
     if (!input.trim()) return;
     try {
       setLoading(true);
-      const res = await axios.post("https://ektachatboatbackend.onrender.com/api/chat", {
+      const res = await axios.post("https://ektachatboatbackend-1.onrender.com/api/chat", {
         userinput: input,
       });
       setMessages(res.data.history);
@@ -101,7 +101,7 @@ export default function Chat() {
                            const  yes = confirm("are you want to delete all chat?");
                            if(yes){
 
-                            axios.get('https://ektachatboatbackend.onrender.com/api/delete')
+                            axios.get('https://ektachatboatbackend-1.onrender.com/api/delete')
                             .then((res)=>{
                                  alert("chat deleted")
                                  window.location.href = '/'
