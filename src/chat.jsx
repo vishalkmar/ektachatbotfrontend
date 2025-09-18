@@ -37,7 +37,7 @@ export default function Chat() {
     if (!input.trim()) return;
     try {
       setLoading(true);
-      const res = await axios.post("http://localhost:8000/api/chat", {
+      const res = await axios.post("https://ektachatboatbackend.onrender.com/api/chat", {
         userinput: input,
       });
       setMessages(res.data.history);
