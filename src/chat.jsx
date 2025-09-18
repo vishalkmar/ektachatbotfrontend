@@ -23,7 +23,9 @@ export default function Chat() {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const res = await axios.get("https://ektachatboatbackend-1.onrender.com/api/history");
+        const res = await axios.get(
+          "https://ektachatboatbackend-1.onrender.com/api/history"
+        );
         setMessages(res.data.history);
       } catch (err) {
         console.error("Error fetching history:", err);
@@ -37,9 +39,12 @@ export default function Chat() {
     if (!input.trim()) return;
     try {
       setLoading(true);
-      const res = await axios.post("https://ektachatboatbackend-1.onrender.com/api/chat", {
-        userinput: input,
-      });
+      const res = await axios.post(
+        "https://ektachatboatbackend-1.onrender.com/api/chat",
+        {
+          userinput: input,
+        }
+      );
       setMessages(res.data.history);
       setInput("");
     } catch (err) {
@@ -53,7 +58,7 @@ export default function Chat() {
     width: "6px",
     height: "6px",
     borderRadius: "50%",
-    background: "#555",
+    background: "#00ff99",
     display: "inline-block",
     animation: `blink 1.4s ${delay}s infinite both`,
   });
@@ -61,70 +66,81 @@ export default function Chat() {
   return (
     <div
       style={{
-        maxWidth: "600px",
+        maxWidth: "650px",
         margin: "40px auto",
         padding: "20px",
-        borderRadius: "12px",
-        background: "linear-gradient(135deg, #e0f7fa, #fce4ec)",
-        boxShadow: "0px 4px 15px rgba(0,0,0,0.15)",
+        borderRadius: "15px",
+        background: "linear-gradient(135deg, #0f2027, #203a43, #2c5364)",
+        boxShadow: "0 0 20px rgba(0, 255, 200, 0.3)",
         display: "flex",
         flexDirection: "column",
         height: "80vh",
-        fontFamily: "Segoe UI, sans-serif",
+        fontFamily: "Consolas, monospace",
+        color: "#00ff99",
+        position: "relative",
+        overflow: "hidden",
       }}
     >
+      {/* Floating Clear Button */}
+      <button
+        style={{
+          position: "absolute",
+          top: "20px",
+          right: "20px",
+          background: "#ff007f",
+          color: "#fff",
+          border: "none",
+          padding: "10px 16px",
+          borderRadius: "50px",
+          fontSize: "14px",
+          cursor: "pointer",
+          boxShadow: "0 0 10px #ff007f",
+          transition: "0.2s all",
+          zIndex: 10,
+        }}
+        onClick={() => {
+          const yes = confirm("Are you sure you want to delete all chat?");
+          if (yes) {
+            axios
+              .get(
+                "https://ektachatboatbackend-1.onrender.com/api/delete"
+              )
+              .then(() => {
+                alert("Chat deleted");
+                window.location.href = "/";
+              })
+              .catch((err) => console.log(err));
+          }
+        }}
+        onMouseOver={(e) => (e.target.style.boxShadow = "0 0 15px #ff007f")}
+        onMouseOut={(e) => (e.target.style.boxShadow = "0 0 10px #ff007f")}
+      >
+        Clear All
+      </button>
+
       <h2
         style={{
           textAlign: "center",
-          marginBottom: "10px",
-          fontSize: "20px",
+          marginBottom: "15px",
+          fontSize: "24px",
           fontWeight: "bold",
-          color: "#333",
+          color: "#00ff99",
+          textShadow: "0 0 5px #00ff99",
         }}
       >
         💬 Ekta Chat
       </h2>
-       <button
-         
-          style={{
-            background: "#25d366",
-            color: "#fff",
-            border: "none",
-            padding: "0 20px",
-            borderRadius: "50%",
-            fontSize: "16px",
-            cursor: "pointer",
-            transition: "background 0.2s ease",
-          }}
-            onClick={()=>{
-                   
-                           const  yes = confirm("are you want to delete all chat?");
-                           if(yes){
-
-                            axios.get('https://ektachatboatbackend-1.onrender.com/api/delete')
-                            .then((res)=>{
-                                 alert("chat deleted")
-                                 window.location.href = '/'
-                            })
-                            .catch((err)=>{
-                                 console.log(err)
-                            })
-                           }
-                  
-            }}
-        >
-          clear all
-        </button>
 
       {/* Messages Area */}
       <div
         style={{
           flex: 1,
-          borderRadius: "10px",
-          background: "#fff",
+          borderRadius: "12px",
+          background: "#0a1a2e",
           padding: "15px",
           overflowY: "auto",
           marginBottom: "10px",
+          boxShadow: "inset 0 0 10px rgba(0,255,150,0.3)",
         }}
       >
         {messages.map((msg, i) => (
@@ -133,23 +149,27 @@ export default function Chat() {
             style={{
               display: "flex",
               justifyContent: msg.role === "user" ? "flex-end" : "flex-start",
-              marginBottom: "8px",
+              marginBottom: "10px",
             }}
           >
             <div
               style={{
                 maxWidth: "70%",
                 padding: "10px 14px",
-                borderRadius: "15px",
+                borderRadius: "12px",
                 fontSize: "14px",
                 lineHeight: "1.4",
-                background: msg.role === "user" ? "#d9fdd3" : "#e4e6eb",
-                color: "#111",
-                boxShadow: "0px 1px 3px rgba(0,0,0,0.1)",
+                background:
+                  msg.role === "user"
+                    ? "linear-gradient(90deg, #006400, #00ff99)"
+                    : "linear-gradient(90deg, #001f3f, #004080)",
+                color: "#fff",
+                boxShadow: "0 0 5px rgba(0,255,150,0.5)",
                 wordWrap: "break-word",
               }}
             >
-              <b>{msg.role === "user" ? "You" : "Ekta"}:</b> {msg.parts[0].text}
+              <b>{msg.role === "user" ? "You" : "Ekta"}:</b>{" "}
+              {msg.parts[0].text}
             </div>
           </div>
         ))}
@@ -167,12 +187,12 @@ export default function Chat() {
               style={{
                 maxWidth: "70%",
                 padding: "10px 14px",
-                borderRadius: "15px",
+                borderRadius: "12px",
                 fontSize: "14px",
                 lineHeight: "1.4",
-                background: "#e4e6eb",
-                color: "#111",
-                boxShadow: "0px 1px 3px rgba(0,0,0,0.1)",
+                background: "linear-gradient(90deg, #001f3f, #004080)",
+                color: "#fff",
+                boxShadow: "0 0 5px rgba(0,255,150,0.5)",
                 display: "flex",
                 alignItems: "center",
                 gap: "6px",
@@ -197,31 +217,34 @@ export default function Chat() {
           style={{
             flex: 1,
             padding: "12px",
-            borderRadius: "20px",
-            border: "1px solid #ccc",
+            borderRadius: "25px",
+            border: "1px solid #00ff99",
             outline: "none",
             fontSize: "14px",
+            background: "#0a1a2e",
+            color: "#00ff99",
+            boxShadow: "0 0 5px rgba(0,255,150,0.5)",
           }}
           onKeyDown={(e) => e.key === "Enter" && sendMessage()}
         />
         <button
           onClick={sendMessage}
           style={{
-            background: "#25d366",
-            color: "#fff",
+            background: "#00ff99",
+            color: "#0a1a2e",
             border: "none",
             padding: "0 20px",
             borderRadius: "50%",
             fontSize: "16px",
             cursor: "pointer",
-            transition: "background 0.2s ease",
+            transition: "0.2s all",
+            boxShadow: "0 0 10px #00ff99",
           }}
-          onMouseOver={(e) => (e.target.style.background = "#1ebc57")}
-          onMouseOut={(e) => (e.target.style.background = "#25d366")}
+          onMouseOver={(e) => (e.target.style.boxShadow = "0 0 15px #00ff99")}
+          onMouseOut={(e) => (e.target.style.boxShadow = "0 0 10px #00ff99")}
         >
           ➤
         </button>
-        
       </div>
     </div>
   );
