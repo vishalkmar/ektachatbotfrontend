@@ -23,7 +23,7 @@ export default function Chat() {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const res = await axios.get("http://localhost:8000/api/history");
+        const res = await axios.get("https://ektachatboatbackend.onrender.com/api/history");
         setMessages(res.data.history);
       } catch (err) {
         console.error("Error fetching history:", err);
@@ -101,7 +101,7 @@ export default function Chat() {
                            const  yes = confirm("are you want to delete all chat?");
                            if(yes){
 
-                            axios.get('http://localhost:8000/api/delete')
+                            axios.get('https://ektachatboatbackend.onrender.com/api/delete')
                             .then((res)=>{
                                  alert("chat deleted")
                                  window.location.href = '/'
